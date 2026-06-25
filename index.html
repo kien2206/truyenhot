@@ -709,7 +709,7 @@ function renderDetail() {
       </div>
     </div>
     ${s.tom_tat ? `<div class="story-summary">${esc(s.tom_tat.slice(0,500))}</div>` : ''}
-    ${chuongs.length ? `<button class="read-first-btn" onclick="openChapter('${esc(s.slug)}',1)">▶ Đọc từ chương 1</button>` : ''}
+    ${chuongs.length ? `<button class="read-first-btn" onclick="openChapter('${esc(s.slug)}',${chuongs[0].so_chuong})">▶ Đọc từ chương ${chuongs[0].so_chuong}</button>` : ''}
     <div class="section-hd">Danh sách chương</div>
     <div class="chap-list">${chapItems || '<div class="empty"><p>Chưa có chương.</p></div>'}</div>
   </div>`;
