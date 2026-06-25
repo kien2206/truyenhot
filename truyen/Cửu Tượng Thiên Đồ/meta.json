@@ -4,8 +4,8 @@
   "the_loai": "Huyền huyễn",
   "tom_tat": "Ninh Dạ, thiếu niên từng là thiên tài sáng chói của Ninh gia, một trong tứ đại gia tộc tại Thanh Mộc thành, bỗng chốc rơi xuống vực sâu khi Tinh Luân của hắn bị vỡ nát trong một tai nạn bí ẩn năm 8 tuổi. Từ đỉnh cao danh vọng, hắn trở thành kẻ phế vật, bị mọi người khinh bỉ, hắt hủi, thậm chí là người thân trong gia đình cũng lạnh nhạt. Nỗi đau thể xác và tinh thần biến Ninh Dạ t\ufffd",
   "tong_chuong_ke_hoach": 80,
-  "chuong_xong": 51,
-  "cap_nhat": "2026-06-26T01:36:38",
+  "chuong_xong": 52,
+  "cap_nhat": "2026-06-26T01:37:49",
   "chuongs": [
     {
       "so_chuong": 8,
@@ -210,6 +210,10 @@
     {
       "so_chuong": 51,
       "cap_nhat": "2026-06-26T01:36:38"
+    },
+    {
+      "so_chuong": 52,
+      "cap_nhat": "2026-06-26T01:37:49"
     }
   ]
 }
