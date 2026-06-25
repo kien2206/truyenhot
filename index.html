@@ -1,4 +1,371 @@
-$token = "ghp_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"
-$content = [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes((Get-Content "e:\Viết truyện\truyenhot-web\index.html" -Raw -Encoding UTF8)))
-$body = @{message="feat: add AI story reader"; content=$content; branch="main"} | ConvertTo-Json
-Invoke-RestMethod "https://api.github.com/repos/kien2206/truyenhot/contents/index.html" -Method PUT -Headers @{Authorization="Bearer $token";"Content-Type"="application/json"} -Body $body
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TruyenHot - Đọc truyện AI</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+
+:root {
+  --bg: #0f0f11;
+  --card: #1a1a1f;
+  --border: #2a2a32;
+  --text: #e8e8f0;
+  --muted: #888898;
+  --accent: #7c6af7;
+  --accent-hover: #9988ff;
+  --red: #e05555;
+  --green: #55c878;
+  --radius: 10px;
+  --font: 'Segoe UI', system-ui, sans-serif;
+  --font-read: Georgia, 'Times New Roman', serif;
+}
+
+body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh }
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15,15,17,.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 20px;
+}
+.nav-brand { font-size: 1.1rem; font-weight: 700; color: var(--accent); letter-spacing: .5px; cursor: pointer; flex: 1 }
+.nav-btn {
+  background: none; border: 1px solid var(--border); color: var(--text);
+  padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: .85rem;
+  transition: border-color .15s, color .15s;
+}
+.nav-btn:hover { border-color: var(--accent); color: var(--accent) }
+
+/* ── LAYOUT ── */
+.page { max-width: 860px; margin: 0 auto; padding: 32px 20px }
+
+/* ── HOME ── */
+.welcome { text-align: center; padding: 48px 0 32px }
+.welcome h1 { font-size: 2.2rem; font-weight: 800; background: linear-gradient(135deg,#7c6af7,#c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent }
+.welcome p { color: var(--muted); margin-top: 8px; font-size: .95rem }
+
+.section-title { font-size: 1rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px }
+
+.story-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 40px }
+
+.story-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 20px 16px; cursor: pointer; transition: border-color .2s, transform .2s;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.story-card:hover { border-color: var(--accent); transform: translateY(-2px) }
+.story-cover {
+  width: 48px; height: 48px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), #c084fc);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 4px;
+}
+.story-title { font-weight: 600; font-size: .95rem; line-height: 1.3 }
+.story-meta { font-size: .8rem; color: var(--muted) }
+.story-badge {
+  display: inline-block; font-size: .72rem; padding: 2px 8px; border-radius: 99px;
+  background: rgba(124,106,247,.18); color: var(--accent); width: fit-content;
+}
+
+.empty-state { text-align: center; padding: 64px 0; color: var(--muted) }
+.empty-state h3 { font-size: 1.1rem; margin-bottom: 8px }
+.empty-state p { font-size: .875rem }
+
+/* ── DETAIL ── */
+.back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--muted); background: none; border: none; cursor: pointer;
+  font-size: .875rem; margin-bottom: 24px; padding: 0;
+}
+.back-btn:hover { color: var(--text) }
+.back-btn::before { content: "←" }
+
+.story-header { display: flex; gap: 20px; margin-bottom: 28px; flex-wrap: wrap }
+.story-header-cover {
+  width: 80px; height: 80px; border-radius: 12px; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--accent), #c084fc);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem; font-weight: 800; color: #fff;
+}
+.story-header-info h1 { font-size: 1.5rem; font-weight: 700; line-height: 1.3 }
+.story-header-info p { color: var(--muted); margin-top: 6px; font-size: .875rem }
+.story-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 24px; font-size: .875rem; line-height: 1.7; color: var(--muted) }
+
+.chap-list { display: flex; flex-direction: column; gap: 6px }
+.chap-item {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+  padding: 12px 16px; cursor: pointer; transition: border-color .15s;
+}
+.chap-item:hover { border-color: var(--accent) }
+.chap-num { font-size: .75rem; color: var(--accent); font-weight: 700; min-width: 32px }
+.chap-title { font-size: .9rem; flex: 1 }
+.chap-date { font-size: .75rem; color: var(--muted) }
+
+/* ── READER ── */
+.reader-nav {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 24px;
+  padding-bottom: 16px; border-bottom: 1px solid var(--border);
+}
+.reader-nav-title { flex: 1; font-size: .9rem; color: var(--muted) }
+.reader-btn {
+  background: var(--card); border: 1px solid var(--border); color: var(--text);
+  padding: 7px 16px; border-radius: 6px; cursor: pointer; font-size: .85rem;
+  transition: border-color .15s;
+}
+.reader-btn:hover:not(:disabled) { border-color: var(--accent) }
+.reader-btn:disabled { opacity: .35; cursor: not-allowed }
+
+.reader-content {
+  font-family: var(--font-read); font-size: 1.05rem; line-height: 1.95;
+  max-width: 680px; margin: 0 auto;
+}
+.reader-content h1 { font-family: var(--font); font-size: 1.2rem; margin-bottom: 24px; color: var(--accent) }
+.reader-content p { margin-bottom: 16px; text-indent: 2em }
+
+.reader-footer {
+  display: flex; gap: 12px; margin-top: 40px; padding-top: 24px;
+  border-top: 1px solid var(--border); justify-content: center;
+}
+
+/* ── SETTINGS ── */
+.settings-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; max-width: 480px }
+.settings-card h2 { font-size: 1.1rem; margin-bottom: 20px }
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px }
+.field label { font-size: .8rem; color: var(--muted); font-weight: 500 }
+.field input {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
+  color: var(--text); padding: 8px 12px; font-size: .9rem; outline: none;
+}
+.field input:focus { border-color: var(--accent) }
+.btn-primary {
+  background: var(--accent); color: #fff; border: none; border-radius: 6px;
+  padding: 9px 20px; font-size: .9rem; cursor: pointer; font-weight: 600;
+  transition: background .15s;
+}
+.btn-primary:hover { background: var(--accent-hover) }
+.status-ok { color: var(--green); font-size: .85rem; margin-top: 8px }
+.status-err { color: var(--red); font-size: .85rem; margin-top: 8px }
+
+/* ── SPINNER ── */
+.spinner {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 3px solid var(--border); border-top-color: var(--accent);
+  animation: spin .7s linear infinite; margin: 60px auto;
+}
+@keyframes spin { to { transform: rotate(360deg) } }
+
+@media (max-width: 480px) {
+  .story-grid { grid-template-columns: 1fr 1fr }
+  .story-header { flex-direction: column }
+  .reader-content { font-size: .95rem }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand" onclick="goHome()">TruyenHot</div>
+  <button class="nav-btn" onclick="showSettings()">Cài đặt</button>
+</nav>
+
+<div id="app"></div>
+
+<script>
+const OWNER = 'kien2206';
+const REPO  = 'truyenhot';
+const BRANCH= 'main';
+const RAW   = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}`;
+const API   = `https://api.github.com/repos/${OWNER}/${REPO}/contents`;
+
+const state = { view: 'home', stories: null, story: null, chapter: null, chapterNum: 0, loading: false, error: null };
+
+// ── Routing ──────────────────────────────────────────────────
+function goHome()       { state.view='home'; state.story=null; state.chapter=null; render() }
+function showSettings() { state.view='settings'; render() }
+
+async function openStory(entry) {
+  state.view = 'detail'; state.loading = true; state.error = null; state.story = entry; render();
+  try {
+    const meta = await fetchJSON(`${RAW}/truyen/${entry.slug}/meta.json`);
+    state.story = { ...entry, ...meta };
+  } catch(e) { state.error = e.message }
+  state.loading = false; render();
+}
+
+async function openChapter(slug, num) {
+  state.view = 'reader'; state.loading = true; state.chapterNum = num; render();
+  try {
+    const url = `${RAW}/truyen/${slug}/chuong-${String(num).padStart(4,'0')}.md`;
+    const md = await fetchText(url);
+    state.chapter = { slug, num, md };
+  } catch(e) { state.error = e.message }
+  state.loading = false; render();
+}
+
+// ── Fetch helpers ─────────────────────────────────────────────
+async function fetchJSON(url) {
+  const r = await fetch(url + '?_=' + Date.now());
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  return r.json();
+}
+async function fetchText(url) {
+  const r = await fetch(url + '?_=' + Date.now());
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  return r.text();
+}
+
+// ── Load story list ───────────────────────────────────────────
+async function loadStories() {
+  if (state.stories !== null) return;
+  state.loading = true; render();
+  try {
+    state.stories = await fetchJSON(`${RAW}/truyen/index.json`);
+  } catch(e) {
+    // Chưa có truyện nào
+    state.stories = [];
+  }
+  state.loading = false; render();
+}
+
+// ── MD to HTML (minimal) ─────────────────────────────────────
+function mdToHtml(md) {
+  const lines = md.split('\n');
+  let html = '';
+  for (const line of lines) {
+    const t = line.trim();
+    if (!t) { html += ''; continue }
+    if (t.startsWith('# '))  { html += `<h1>${esc(t.slice(2))}</h1>`; continue }
+    if (t.startsWith('## ')) { html += `<h2>${esc(t.slice(3))}</h2>`; continue }
+    html += `<p>${esc(t)}</p>`;
+  }
+  return html;
+}
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+
+function slugToChar(slug) {
+  return (slug || '?').replace(/-/g,' ').split(' ').map(w => w[0]?.toUpperCase() || '').join('').slice(0,2) || '?';
+}
+function fmtDate(s) {
+  if (!s) return '';
+  return s.slice(0,10);
+}
+
+// ── Render ────────────────────────────────────────────────────
+function render() {
+  const app = document.getElementById('app');
+  switch (state.view) {
+    case 'home':     app.innerHTML = renderHome(); break;
+    case 'detail':   app.innerHTML = renderDetail(); break;
+    case 'reader':   app.innerHTML = renderReader(); break;
+    case 'settings': app.innerHTML = renderSettings(); break;
+    default: app.innerHTML = renderHome();
+  }
+}
+
+function renderHome() {
+  if (state.stories === null) { loadStories(); return spinner(); }
+  if (state.loading) return spinner();
+
+  const stories = state.stories || [];
+  const cards = stories.length
+    ? stories.map(s => `
+        <div class="story-card" onclick='openStory(${JSON.stringify(s)})'>
+          <div class="story-cover">${slugToChar(s.slug)}</div>
+          <div class="story-title">${esc(s.ten_truyen || s.slug)}</div>
+          ${s.the_loai ? `<span class="story-badge">${esc(s.the_loai)}</span>` : ''}
+          <div class="story-meta">${s.chuong_xong || 0} chương · ${fmtDate(s.cap_nhat)}</div>
+        </div>`).join('')
+    : `<div class="empty-state" style="grid-column:1/-1">
+        <h3>Chưa có truyện nào</h3>
+        <p>Viết truyện trong app AI rồi kết quả sẽ xuất hiện ở đây tự động.</p>
+      </div>`;
+
+  return `<div class="page">
+    <div class="welcome"><h1>TruyenHot</h1><p>Truyện do AI viết — không quảng cáo, không phiền nhiễu.</p></div>
+    <div class="section-title">Thư viện truyện</div>
+    <div class="story-grid">${cards}</div>
+  </div>`;
+}
+
+function renderDetail() {
+  if (state.loading) return spinner();
+  if (state.error) return `<div class="page"><p class="status-err">${esc(state.error)}</p></div>`;
+  const s = state.story;
+  if (!s) return renderHome();
+
+  const chuongs = (s.chuongs || []);
+  const chapItems = chuongs.map(c => `
+    <div class="chap-item" onclick="openChapter('${esc(s.slug)}',${c.so_chuong})">
+      <span class="chap-num">C${c.so_chuong}</span>
+      <span class="chap-title">${c.tieu_de ? esc(c.tieu_de) : 'Chương '+c.so_chuong}</span>
+      <span class="chap-date">${fmtDate(c.cap_nhat)}</span>
+    </div>`).join('');
+
+  return `<div class="page">
+    <button class="back-btn" onclick="goHome()"> Trang chủ</button>
+    <div class="story-header">
+      <div class="story-header-cover">${slugToChar(s.slug)}</div>
+      <div class="story-header-info">
+        <h1>${esc(s.ten_truyen || s.slug)}</h1>
+        <p>${s.the_loai ? esc(s.the_loai)+' · ' : ''}${chuongs.length} chương${s.tong_chuong_ke_hoach ? ' / '+s.tong_chuong_ke_hoach+' kế hoạch' : ''}</p>
+      </div>
+    </div>
+    ${s.tom_tat ? `<div class="story-summary">${esc(s.tom_tat.slice(0,400))}</div>` : ''}
+    <div class="section-title">Danh sách chương</div>
+    ${chapItems || '<div class="empty-state"><p>Chưa có chương nào.</p></div>'}
+  </div>`;
+}
+
+function renderReader() {
+  if (state.loading) return spinner();
+  if (state.error) return `<div class="page"><p class="status-err">${esc(state.error)}</p></div>`;
+  const ch = state.chapter;
+  if (!ch) return renderHome();
+
+  const s = state.story;
+  const totalCh = s ? (s.chuong_xong || s.chuongs?.length || 0) : 0;
+  const prevDisabled = ch.num <= 1 ? 'disabled' : '';
+  const nextDisabled = ch.num >= totalCh ? 'disabled' : '';
+
+  return `<div class="page">
+    <div class="reader-nav">
+      <button class="back-btn" onclick='openStory(${JSON.stringify(s || {slug: ch.slug})})' style="margin:0"> ${esc(s?.ten_truyen || ch.slug)}</button>
+      <span class="reader-nav-title">Chương ${ch.num}</span>
+    </div>
+    <div class="reader-content">${mdToHtml(ch.md)}</div>
+    <div class="reader-footer">
+      <button class="reader-btn" ${prevDisabled} onclick="openChapter('${ch.slug}',${ch.num-1})">← Chương trước</button>
+      <button class="reader-btn" ${nextDisabled} onclick="openChapter('${ch.slug}',${ch.num+1})">Chương sau →</button>
+    </div>
+  </div>`;
+}
+
+function renderSettings() {
+  return `<div class="page">
+    <button class="back-btn" onclick="goHome()"> Trang chủ</button>
+    <div class="settings-card">
+      <h2>Về TruyenHot</h2>
+      <p style="color:var(--muted);font-size:.875rem;line-height:1.7">
+        Truyện được viết tự động bởi AI và đẩy lên GitHub repo <strong>kien2206/truyenhot</strong>.
+        Mỗi khi chương mới hoàn tất, trang này tự cập nhật khi bạn làm mới trình duyệt.
+      </p>
+      <br>
+      <p style="color:var(--muted);font-size:.8rem">Repo: github.com/kien2206/truyenhot</p>
+    </div>
+  </div>`;
+}
+
+function spinner() {
+  return `<div class="page"><div class="spinner"></div></div>`;
+}
+
+// ── Init ──────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
