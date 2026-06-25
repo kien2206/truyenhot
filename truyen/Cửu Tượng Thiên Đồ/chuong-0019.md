@@ -1,5 +1,7 @@
 # Chương 19
 
+# Chương 19: Mâu Thuẫn Leo Thang: Cạnh Tranh Cao Cấp
+
 Tiết trời Thanh Huyền Học Viện dần chuyển sang thu, những tán cây cổ thụ trong sân đúc vàng rực rỡ dưới ánh nắng dịu. Ninh Dạ đứng trước cửa sổ phòng tu luyện, nhìn ra khung cảnh yên bình bên ngoài, lòng lại không một gợn sóng lặng lẽ. Sau nhiệm vụ Trầm Tịch, danh tiếng của hắn đã vươn xa, không còn là cái tên vô danh. Giờ đây, mỗi bước đi của hắn đều thu hút vô vàn ánh mắt, có ngưỡng mộ, có tò mò, và dĩ nhiên, không thiếu sự ghen ghét.
 
 "Xem ra, ngươi lại sắp có việc bận rồi." Thạch Diên từ trong Vô Tự Thiên Đồ vang lên giọng nói lười biếng, nhưng ẩn chứa chút trêu chọc.
