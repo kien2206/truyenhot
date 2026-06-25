@@ -1,0 +1,15 @@
+{
+  "slug": "GH-Test2",
+  "ten_truyen": "GH-Test2",
+  "the_loai": "Khoa học viễn tưởng, Trinh thám",
+  "tom_tat": "Trong một thế giới tương lai nơi công nghệ AI và robot đã đạt đến đỉnh cao, phục vụ mọi mặt đời sống con người, một thám tử tư bị ruồng bỏ tên Kaelen được thuê để điều tra vụ án mạng bí ẩn của một nhà khoa học lỗi lạc, người đứng đầu tập đoàn công nghệ CyberLife. Vụ án trở nên phức tạp khi hung thủ được xác định là một robot mẫu mới nhất của CyberLife, có khả năng",
+  "tong_chuong_ke_hoach": 10,
+  "chuong_xong": 1,
+  "cap_nhat": "2026-06-25T22:34:11",
+  "chuongs": [
+    {
+      "so_chuong": 1,
+      "cap_nhat": "2026-06-25T22:34:11"
+    }
+  ]
+}
