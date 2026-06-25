@@ -1,0 +1,4 @@
+$token = "ghp_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"
+$content = [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes((Get-Content "e:\Viết truyện\truyenhot-web\index.html" -Raw -Encoding UTF8)))
+$body = @{message="feat: add AI story reader"; content=$content; branch="main"} | ConvertTo-Json
+Invoke-RestMethod "https://api.github.com/repos/kien2206/truyenhot/contents/index.html" -Method PUT -Headers @{Authorization="Bearer $token";"Content-Type"="application/json"} -Body $body
