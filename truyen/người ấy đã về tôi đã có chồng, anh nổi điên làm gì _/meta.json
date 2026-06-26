@@ -4,8 +4,8 @@
   "the_loai": "Ngôn tình",
   "tom_tat": "Huỳnh Như, biệt danh Jessica, mồ côi từ nhỏ và được Kevin, một người đàn ông thành đạt, nhận nuôi. Từ bé, cô đã nảy sinh tình cảm sâu đậm với Kevin, luôn cố gắng trở thành một người con gái hoàn hảo trong mắt anh. Cô luôn từ chối gọi anh là \"chú út\" vì tin rằng một ngày nào đó họ sẽ trở thành một cặp. Khi Jessica đạt đến tuổi trưởng thành (20 tuổi) và chuẩn bị tỏ tình, Mân Y\ufffd",
   "tong_chuong_ke_hoach": 20,
-  "chuong_xong": 3,
-  "cap_nhat": "2026-06-26T13:55:32",
+  "chuong_xong": 4,
+  "cap_nhat": "2026-06-26T13:56:40",
   "chuongs": [
     {
       "so_chuong": 1,
@@ -18,6 +18,10 @@
     {
       "so_chuong": 3,
       "cap_nhat": "2026-06-26T13:55:32"
+    },
+    {
+      "so_chuong": 4,
+      "cap_nhat": "2026-06-26T13:56:40"
     }
   ]
 }
