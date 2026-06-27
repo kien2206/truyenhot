@@ -9,345 +9,154 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 
-/* ══════════════════════════════════════
-   THEMES
-══════════════════════════════════════ */
 :root{
-  --bg:#0f0f11; --bg2:#1a1a1f; --border:#2a2a32;
-  --text:#e8e8f0; --muted:#888898; --muted2:#555565;
-  --accent:#7c6af7; --accent2:#c084fc;
-  --nav-bg:rgba(15,15,17,.94);
-  --card-hover:#222228;
-  --shadow:0 4px 24px rgba(0,0,0,.4);
-  --r:10px;
+  --bg:#0f0f11;--bg2:#1a1a1f;--border:#2a2a32;
+  --text:#e8e8f0;--muted:#888898;--muted2:#555565;
+  --accent:#7c6af7;--accent2:#c084fc;
+  --nav-bg:rgba(15,15,17,.94);--card-hover:#222228;
+  --shadow:0 4px 24px rgba(0,0,0,.4);--r:10px;
   --font-ui:'Segoe UI',system-ui,sans-serif;
   --font-read:Georgia,'Times New Roman',serif;
-  --size-read:17px; --lh-read:1.95; --width-read:680px;
+  --size-read:17px;--lh-read:1.95;--width-read:700px;
 }
-[data-theme=light]{
-  --bg:#f5f5f0; --bg2:#ffffff; --border:#e0dfd8;
-  --text:#1a1a18; --muted:#6b6b60; --muted2:#aaa89a;
-  --nav-bg:rgba(245,245,240,.96);
-  --card-hover:#ebebE6;
-  --shadow:0 4px 24px rgba(0,0,0,.1);
-}
-[data-theme=sepia]{
-  --bg:#f4efe6; --bg2:#faf7f1; --border:#ddd5c0;
-  --text:#3b2f1e; --muted:#7a6b52; --muted2:#b5a48a;
-  --nav-bg:rgba(244,239,230,.96);
-  --card-hover:#ede8de;
-  --shadow:0 4px 24px rgba(100,80,40,.12);
-}
+[data-theme=light]{--bg:#f5f5f0;--bg2:#fff;--border:#e0dfd8;--text:#1a1a18;--muted:#6b6b60;--muted2:#aaa89a;--nav-bg:rgba(245,245,240,.96);--card-hover:#ebebE6;--shadow:0 4px 24px rgba(0,0,0,.1)}
+[data-theme=sepia]{--bg:#f4efe6;--bg2:#faf7f1;--border:#ddd5c0;--text:#3b2f1e;--muted:#7a6b52;--muted2:#b5a48a;--nav-bg:rgba(244,239,230,.96);--card-hover:#ede8de;--shadow:0 4px 24px rgba(100,80,40,.12)}
+[data-font=sans]{--font-read:'Segoe UI',system-ui,sans-serif}
+[data-font=serif]{--font-read:Georgia,'Times New Roman',serif}
+[data-font=round]{--font-read:'Nunito','Varela Round',system-ui,sans-serif}
 
-/* ══════════════════════════════════════
-   FONT VARIANTS
-══════════════════════════════════════ */
-[data-font=sans]  { --font-read:'Segoe UI',system-ui,sans-serif }
-[data-font=serif] { --font-read:Georgia,'Times New Roman',serif }
-[data-font=round] { --font-read:'Nunito','Varela Round',system-ui,sans-serif }
+body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-height:100vh;transition:background .2s,color .2s}
 
-body{
-  background:var(--bg); color:var(--text);
-  font-family:var(--font-ui); min-height:100vh;
-  transition:background .2s,color .2s;
-}
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:var(--nav-bg);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;padding:10px 16px;height:52px}
+.nav-brand{font-size:1.05rem;font-weight:800;cursor:pointer;flex:1;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-icon-btn{width:36px;height:36px;border-radius:8px;background:none;border:1px solid var(--border);color:var(--muted);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:border-color .15s,color .15s,background .15s}
+.nav-icon-btn:hover,.nav-icon-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(124,106,247,.1)}
 
-/* ══════════════════════════════════════
-   NAV
-══════════════════════════════════════ */
-nav{
-  position:sticky; top:0; z-index:200;
-  background:var(--nav-bg); backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--border);
-  display:flex; align-items:center; gap:10px;
-  padding:10px 16px; height:52px;
-}
-.nav-brand{
-  font-size:1.05rem; font-weight:800; color:var(--accent);
-  letter-spacing:.4px; cursor:pointer; flex:1;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-}
-.nav-icon-btn{
-  width:36px; height:36px; border-radius:8px;
-  background:none; border:1px solid var(--border);
-  color:var(--muted); cursor:pointer; font-size:1rem;
-  display:flex; align-items:center; justify-content:center;
-  transition:border-color .15s,color .15s,background .15s;
-}
-.nav-icon-btn:hover,.nav-icon-btn.active{
-  border-color:var(--accent); color:var(--accent); background:rgba(124,106,247,.1);
-}
-
-/* ══════════════════════════════════════
-   LAYOUT
-══════════════════════════════════════ */
+/* LAYOUT */
 .page{max-width:860px;margin:0 auto;padding:28px 16px}
+.section-hd{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:14px}
 
-/* ══════════════════════════════════════
-   HOME
-══════════════════════════════════════ */
-.welcome{text-align:center;padding:40px 0 28px}
-.welcome h1{
-  font-size:2rem; font-weight:900;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-}
+/* HOME */
+.welcome{text-align:center;padding:36px 0 24px}
+.welcome h1{font-size:2rem;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .welcome p{color:var(--muted);margin-top:8px;font-size:.9rem}
 
-.section-hd{
-  font-size:.78rem; font-weight:700; color:var(--muted); text-transform:uppercase;
-  letter-spacing:1.2px; margin-bottom:14px;
-}
-
 /* Story grid */
-.story-grid{
-  display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-  gap:12px; margin-bottom:36px;
-}
-.story-card{
-  background:var(--bg2); border:1px solid var(--border); border-radius:var(--r);
-  padding:16px 14px; cursor:pointer;
-  transition:border-color .2s,transform .15s,background .15s;
-  display:flex; flex-direction:column; gap:8px; position:relative;
-}
+.story-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:36px}
+.story-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px 14px;cursor:pointer;transition:border-color .2s,transform .15s,background .15s;display:flex;flex-direction:column;gap:8px;position:relative}
 .story-card:active{transform:scale(.97)}
 @media(hover:hover){.story-card:hover{border-color:var(--accent);background:var(--card-hover);transform:translateY(-2px)}}
-.story-cover{
-  width:44px; height:44px; border-radius:10px;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  display:flex; align-items:center; justify-content:center;
-  font-size:1.2rem; font-weight:900; color:#fff; margin-bottom:2px;
-}
+.story-cover{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:900;color:#fff;margin-bottom:2px}
 .story-title{font-weight:700;font-size:.9rem;line-height:1.35;color:var(--text)}
-.story-badge{
-  font-size:.7rem; padding:2px 7px; border-radius:99px;
-  background:rgba(124,106,247,.15); color:var(--accent);
-  width:fit-content; font-weight:600;
-}
+.story-badge{font-size:.7rem;padding:2px 7px;border-radius:99px;background:rgba(124,106,247,.15);color:var(--accent);width:fit-content;font-weight:600}
 .story-meta{font-size:.75rem;color:var(--muted)}
-.story-new{
-  position:absolute; top:10px; right:10px;
-  width:8px; height:8px; border-radius:50%; background:var(--accent);
-}
+.story-new{position:absolute;top:10px;right:10px;width:8px;height:8px;border-radius:50%;background:var(--accent)}
 
-/* Continue reading */
-.continue-section{margin-bottom:28px}
-.continue-card{
-  background:linear-gradient(135deg,rgba(124,106,247,.12),rgba(192,132,252,.08));
-  border:1px solid rgba(124,106,247,.3); border-radius:var(--r);
-  padding:14px 16px; cursor:pointer; display:flex; align-items:center; gap:14px;
-  transition:border-color .2s;
-}
-.continue-card:hover{border-color:var(--accent)}
-.continue-info{flex:1}
-.continue-title{font-weight:700;font-size:.9rem;color:var(--accent)}
-.continue-sub{font-size:.78rem;color:var(--muted);margin-top:3px}
-.continue-arrow{font-size:1.2rem;color:var(--accent)}
+/* History */
+.hist-section{margin-bottom:28px}
+.hist-list{display:flex;flex-direction:column;gap:6px}
+.hist-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:border-color .15s,background .15s}
+.hist-card:active{background:var(--card-hover)}
+@media(hover:hover){.hist-card:hover{border-color:var(--accent);background:var(--card-hover)}}
+.hist-cover{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:900;color:#fff;flex-shrink:0}
+.hist-info{flex:1;min-width:0}
+.hist-name{font-weight:700;font-size:.88rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist-sub{font-size:.74rem;color:var(--muted);margin-top:2px}
+.hist-pct{font-size:.72rem;color:var(--accent);font-weight:600;white-space:nowrap}
+.hist-prog{width:100%;height:3px;background:var(--border);border-radius:2px;margin-top:5px;overflow:hidden}
+.hist-prog-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px}
 
-/* Empty */
-.empty{text-align:center;padding:56px 0;color:var(--muted);grid-column:1/-1}
-.empty h3{font-size:1rem;margin-bottom:6px}
-.empty p{font-size:.82rem}
-
-/* ══════════════════════════════════════
-   DETAIL
-══════════════════════════════════════ */
-.back-btn{
-  display:inline-flex; align-items:center; gap:5px;
-  color:var(--muted); background:none; border:none; cursor:pointer;
-  font-size:.85rem; margin-bottom:20px; padding:4px 0;
-}
+/* DETAIL */
+.back-btn{display:inline-flex;align-items:center;gap:5px;color:var(--muted);background:none;border:none;cursor:pointer;font-size:.85rem;margin-bottom:20px;padding:4px 0}
 .back-btn:hover{color:var(--accent)}
-
 .story-hdr{display:flex;gap:16px;margin-bottom:20px;align-items:flex-start}
-.story-hdr-cover{
-  width:72px; height:72px; border-radius:12px; flex-shrink:0;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  display:flex; align-items:center; justify-content:center;
-  font-size:1.8rem; font-weight:900; color:#fff;
-}
+.story-hdr-cover{width:72px;height:72px;border-radius:12px;flex-shrink:0;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:900;color:#fff}
 .story-hdr-info h1{font-size:1.3rem;font-weight:800;line-height:1.3}
 .story-hdr-info p{color:var(--muted);margin-top:5px;font-size:.82rem;line-height:1.5}
-.story-summary{
-  background:var(--bg2); border:1px solid var(--border); border-radius:var(--r);
-  padding:14px; margin-bottom:20px; font-size:.85rem; line-height:1.7; color:var(--muted);
-}
-.read-first-btn{
-  width:100%; padding:12px; background:var(--accent); color:#fff;
-  border:none; border-radius:var(--r); font-size:.95rem; font-weight:700;
-  cursor:pointer; margin-bottom:20px; transition:opacity .15s;
-}
+.story-summary{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:20px;font-size:.85rem;line-height:1.7;color:var(--muted)}
+.read-first-btn{width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:var(--r);font-size:.95rem;font-weight:700;cursor:pointer;margin-bottom:20px;transition:opacity .15s}
 .read-first-btn:hover{opacity:.9}
-
 .chap-list{display:flex;flex-direction:column;gap:4px}
-.chap-item{
-  display:flex; align-items:center; gap:12px;
-  background:var(--bg2); border:1px solid var(--border); border-radius:8px;
-  padding:11px 14px; cursor:pointer; transition:border-color .15s,background .15s;
-}
+.chap-item{display:flex;align-items:center;gap:12px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;cursor:pointer;transition:border-color .15s,background .15s;position:relative}
 .chap-item:active{background:var(--card-hover)}
+.chap-item.last-read{border-color:rgba(124,106,247,.4);background:rgba(124,106,247,.06)}
 @media(hover:hover){.chap-item:hover{border-color:var(--accent);background:var(--card-hover)}}
 .chap-num{font-size:.72rem;color:var(--accent);font-weight:700;min-width:28px}
 .chap-title{font-size:.88rem;flex:1;line-height:1.3}
 .chap-date{font-size:.7rem;color:var(--muted);white-space:nowrap}
+.chap-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0}
 
-/* ══════════════════════════════════════
-   READER
-══════════════════════════════════════ */
-.reader-wrap{
-  max-width:var(--width-read); margin:0 auto;
-  padding:0 0 100px;
-}
-.reader-top{
-  display:flex; align-items:center; gap:10px;
-  padding:10px 0 16px; border-bottom:1px solid var(--border); margin-bottom:28px;
-}
+/* READER */
+.reader-wrap{max-width:var(--width-read);margin:0 auto;padding:0 0 100px}
+.reader-top{display:flex;align-items:center;gap:10px;padding:10px 0 16px;border-bottom:1px solid var(--border);margin-bottom:28px}
 .reader-story-link{flex:1;font-size:.82rem;color:var(--muted);cursor:pointer}
 .reader-story-link:hover{color:var(--accent)}
 .reader-chap-info{font-size:.82rem;color:var(--muted2)}
-
-.reader-body{
-  font-family:var(--font-read); font-size:var(--size-read); line-height:var(--lh-read);
-  color:var(--text);
-}
-.reader-body h1{
-  font-family:var(--font-ui); font-size:1.15rem; font-weight:800;
-  margin-bottom:28px; color:var(--accent); text-align:center;
-  padding-bottom:16px; border-bottom:1px solid var(--border);
-}
+.reader-body{font-family:var(--font-read);font-size:var(--size-read);line-height:var(--lh-read);color:var(--text)}
+.reader-body h1{font-family:var(--font-ui);font-size:1.15rem;font-weight:800;margin-bottom:28px;color:var(--accent);text-align:center;padding-bottom:16px;border-bottom:1px solid var(--border)}
 .reader-body h2{font-size:1rem;margin:24px 0 12px;color:var(--text)}
-.reader-body p{margin-bottom:.9em; text-indent:2em}
+.reader-body p{margin-bottom:.9em;text-indent:2em}
 
 /* Bottom nav bar */
-.reader-nav-bar{
-  position:fixed; bottom:0; left:0; right:0; z-index:150;
-  background:var(--nav-bg); backdrop-filter:blur(14px);
-  border-top:1px solid var(--border);
-  display:flex; align-items:center; gap:8px; padding:8px 12px;
-  padding-bottom:max(8px,env(safe-area-inset-bottom));
-}
-.rnb-btn{
-  flex:1; padding:10px 6px; border-radius:8px; font-size:.82rem; font-weight:600;
-  background:var(--bg2); border:1px solid var(--border); color:var(--text);
-  cursor:pointer; transition:border-color .15s;
-  white-space:nowrap; text-align:center;
-}
+.reader-nav-bar{position:fixed;bottom:0;left:0;right:0;z-index:150;background:var(--nav-bg);backdrop-filter:blur(14px);border-top:1px solid var(--border);display:flex;align-items:center;gap:8px;padding:8px 12px;padding-bottom:max(8px,env(safe-area-inset-bottom))}
+.rnb-btn{flex:1;padding:10px 6px;border-radius:8px;font-size:.82rem;font-weight:600;background:var(--bg2);border:1px solid var(--border);color:var(--text);cursor:pointer;transition:border-color .15s;white-space:nowrap;text-align:center}
 .rnb-btn:active{opacity:.7}
 .rnb-btn:disabled{opacity:.3;cursor:not-allowed}
 @media(hover:hover){.rnb-btn:hover:not(:disabled){border-color:var(--accent)}}
-.rnb-center{
-  display:flex; flex-direction:column; align-items:center;
-  gap:1px; flex:0 0 auto; cursor:pointer;
-}
+.rnb-center{display:flex;flex-direction:column;align-items:center;gap:1px;flex:0 0 auto;cursor:pointer}
 .rnb-chap{font-size:.78rem;color:var(--muted);font-weight:500}
 .rnb-prog{font-size:.7rem;color:var(--muted2)}
 
 /* Progress bar */
-.read-progress{
-  position:fixed; top:52px; left:0; right:0; z-index:199;
-  height:2px; background:var(--border);
-}
+.read-progress{position:fixed;top:52px;left:0;right:0;z-index:199;height:2px;background:var(--border)}
 .read-progress-bar{height:100%;background:var(--accent);transition:width .1s}
 
-/* Fab settings button (reader) */
-.fab{
-  position:fixed; right:16px; bottom:calc(72px + max(0px,env(safe-area-inset-bottom)));
-  width:44px; height:44px; border-radius:50%;
-  background:var(--accent); color:#fff; border:none;
-  font-size:1rem; cursor:pointer; box-shadow:var(--shadow);
-  display:flex; align-items:center; justify-content:center;
-  z-index:149; transition:transform .15s;
-}
+/* Fab */
+.fab{position:fixed;right:16px;bottom:calc(72px + max(0px,env(safe-area-inset-bottom)));width:44px;height:44px;border-radius:50%;background:var(--accent);color:#fff;border:none;font-size:1rem;cursor:pointer;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;z-index:149;transition:transform .15s}
 .fab:active{transform:scale(.9)}
 
-/* ══════════════════════════════════════
-   SETTINGS DRAWER
-══════════════════════════════════════ */
-.drawer-overlay{
-  position:fixed; inset:0; background:rgba(0,0,0,.5);
-  z-index:300; opacity:0; pointer-events:none; transition:opacity .2s;
-}
+/* DRAWER */
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;opacity:0;pointer-events:none;transition:opacity .2s}
 .drawer-overlay.open{opacity:1;pointer-events:all}
-.drawer{
-  position:fixed; bottom:0; left:0; right:0; z-index:301;
-  background:var(--bg2); border-top:1px solid var(--border);
-  border-radius:16px 16px 0 0; padding:16px 20px;
-  padding-bottom:max(24px,env(safe-area-inset-bottom));
-  transform:translateY(100%); transition:transform .28s cubic-bezier(.4,0,.2,1);
-  max-height:88vh; overflow-y:auto;
-}
+.drawer{position:fixed;bottom:0;left:0;right:0;z-index:301;background:var(--bg2);border-top:1px solid var(--border);border-radius:16px 16px 0 0;padding:16px 20px;padding-bottom:max(24px,env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);max-height:88vh;overflow-y:auto}
 .drawer.open{transform:translateY(0)}
-.drawer-handle{
-  width:36px; height:4px; border-radius:2px; background:var(--border);
-  margin:0 auto 16px;
-}
+.drawer-handle{width:36px;height:4px;border-radius:2px;background:var(--border);margin:0 auto 16px}
 .drawer h3{font-size:.95rem;font-weight:700;margin-bottom:16px}
-
 .setting-row{margin-bottom:18px}
 .setting-label{font-size:.76rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
 .chip-group{display:flex;flex-wrap:wrap;gap:6px}
-.chip{
-  padding:7px 14px; border-radius:8px; font-size:.83rem; font-weight:600;
-  background:var(--bg); border:1px solid var(--border); color:var(--muted);
-  cursor:pointer; transition:all .15s;
-}
+.chip{padding:7px 14px;border-radius:8px;font-size:.83rem;font-weight:600;background:var(--bg);border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s}
 .chip:active{opacity:.7}
 .chip.sel{background:rgba(124,106,247,.18);border-color:var(--accent);color:var(--accent)}
-
 .size-row{display:flex;align-items:center;gap:10px}
-.size-btn{
-  width:36px; height:36px; border-radius:8px; background:var(--bg);
-  border:1px solid var(--border); color:var(--muted); cursor:pointer;
-  font-size:1rem; font-weight:700; display:flex; align-items:center; justify-content:center;
-  flex-shrink:0; transition:border-color .15s;
-}
+.size-btn{width:36px;height:36px;border-radius:8px;background:var(--bg);border:1px solid var(--border);color:var(--muted);cursor:pointer;font-size:1rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .15s}
 .size-btn:hover{border-color:var(--accent);color:var(--accent)}
-input[type=range]{
-  flex:1; -webkit-appearance:none; height:4px;
-  background:var(--border); border-radius:2px; outline:none;
-}
-input[type=range]::-webkit-slider-thumb{
-  -webkit-appearance:none; width:18px; height:18px; border-radius:50%;
-  background:var(--accent); cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,.3);
-}
+input[type=range]{flex:1;-webkit-appearance:none;height:4px;background:var(--border);border-radius:2px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.3)}
 .size-val{font-size:.8rem;color:var(--muted);min-width:28px;text-align:center}
-
 .theme-row{display:flex;gap:8px}
-.theme-btn{
-  flex:1; padding:10px 4px; border-radius:8px; font-size:.8rem; font-weight:600;
-  border:2px solid transparent; cursor:pointer; transition:border-color .15s;
-}
+.theme-btn{flex:1;padding:10px 4px;border-radius:8px;font-size:.8rem;font-weight:600;border:2px solid transparent;cursor:pointer;transition:border-color .15s}
 .theme-btn.dark-btn{background:#0f0f11;color:#e8e8f0}
 .theme-btn.light-btn{background:#f5f5f0;color:#1a1a18}
 .theme-btn.sepia-btn{background:#f4efe6;color:#3b2f1e}
 .theme-btn.sel{border-color:var(--accent)}
 
-/* ══════════════════════════════════════
-   SPINNER
-══════════════════════════════════════ */
-.spinner{
-  width:32px; height:32px; border-radius:50%;
-  border:3px solid var(--border); border-top-color:var(--accent);
-  animation:spin .7s linear infinite; margin:64px auto;
-}
+/* SPINNER / ERR */
+.spinner{width:32px;height:32px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--accent);animation:spin .7s linear infinite;margin:64px auto}
 @keyframes spin{to{transform:rotate(360deg)}}
+.err-box{background:rgba(224,85,85,.1);border:1px solid rgba(224,85,85,.3);border-radius:var(--r);padding:16px;margin:20px 0;font-size:.875rem;color:#e05555;text-align:center}
+.empty{text-align:center;padding:56px 0;color:var(--muted);grid-column:1/-1}
+.empty h3{font-size:1rem;margin-bottom:6px}
+.empty p{font-size:.82rem}
 
-.err-box{
-  background:rgba(224,85,85,.1); border:1px solid rgba(224,85,85,.3);
-  border-radius:var(--r); padding:16px; margin:20px 0;
-  font-size:.875rem; color:#e05555; text-align:center;
-}
-
-/* ══════════════════════════════════════
-   MOBILE
-══════════════════════════════════════ */
+/* MOBILE */
 @media(max-width:480px){
   .story-grid{grid-template-columns:repeat(2,1fr);gap:10px}
   .story-card{padding:14px 12px}
   .page{padding:20px 14px}
   .welcome h1{font-size:1.7rem}
-  .welcome{padding:28px 0 20px}
+  .welcome{padding:24px 0 18px}
   .story-hdr{gap:12px}
   .story-hdr-cover{width:60px;height:60px;font-size:1.4rem}
   .story-hdr-info h1{font-size:1.15rem}
@@ -369,12 +178,10 @@ input[type=range]::-webkit-slider-thumb{
 
 <div id="app"></div>
 
-<!-- Settings drawer -->
 <div class="drawer-overlay" id="overlay" onclick="closeDrawer()"></div>
 <div class="drawer" id="drawer">
   <div class="drawer-handle"></div>
   <h3>Cài đặt đọc truyện</h3>
-
   <div class="setting-row">
     <div class="setting-label">Giao diện</div>
     <div class="theme-row">
@@ -383,7 +190,6 @@ input[type=range]::-webkit-slider-thumb{
       <button class="theme-btn sepia-btn" onclick="setTheme('sepia')">📜 Sepia</button>
     </div>
   </div>
-
   <div class="setting-row">
     <div class="setting-label">Phông chữ</div>
     <div class="chip-group">
@@ -392,7 +198,6 @@ input[type=range]::-webkit-slider-thumb{
       <button class="chip" data-font="round" onclick="setFont('round')">Tròn (Rounded)</button>
     </div>
   </div>
-
   <div class="setting-row">
     <div class="setting-label">Cỡ chữ</div>
     <div class="size-row">
@@ -402,7 +207,6 @@ input[type=range]::-webkit-slider-thumb{
       <button class="size-btn" onclick="changeFontSize(1)">A+</button>
     </div>
   </div>
-
   <div class="setting-row">
     <div class="setting-label">Khoảng cách dòng</div>
     <div class="chip-group">
@@ -411,7 +215,6 @@ input[type=range]::-webkit-slider-thumb{
       <button class="chip" data-lh="2.2"  onclick="setLineH(2.2)">Thoáng</button>
     </div>
   </div>
-
   <div class="setting-row">
     <div class="setting-label">Độ rộng nội dung</div>
     <div class="chip-group">
@@ -423,315 +226,361 @@ input[type=range]::-webkit-slider-thumb{
 </div>
 
 <script>
-/* ════════════════════════════════════════
-   CONFIG
-════════════════════════════════════════ */
-const OWNER  = 'kien2206';
-const REPO   = 'truyenhot';
-const BRANCH = 'main';
-const RAW    = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}`;
+const OWNER='kien2206', REPO='truyenhot', BRANCH='main';
+const RAW=`https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}`;
 
-/* ════════════════════════════════════════
+/* ══════════════════════════════════════
+   VIETNAMESE → URL SLUG
+══════════════════════════════════════ */
+const _vi={á:'a',à:'a',ả:'a',ã:'a',ạ:'a',ă:'a',ắ:'a',ằ:'a',ẳ:'a',ẵ:'a',ặ:'a',â:'a',ấ:'a',ầ:'a',ẩ:'a',ẫ:'a',ậ:'a',é:'e',è:'e',ẻ:'e',ẽ:'e',ẹ:'e',ê:'e',ế:'e',ề:'e',ể:'e',ễ:'e',ệ:'e',í:'i',ì:'i',ỉ:'i',ĩ:'i',ị:'i',ó:'o',ò:'o',ỏ:'o',õ:'o',ọ:'o',ô:'o',ố:'o',ồ:'o',ổ:'o',ỗ:'o',ộ:'o',ơ:'o',ớ:'o',ờ:'o',ở:'o',ỡ:'o',ợ:'o',ú:'u',ù:'u',ủ:'u',ũ:'u',ụ:'u',ư:'u',ứ:'u',ừ:'u',ử:'u',ữ:'u',ự:'u',ý:'y',ỳ:'y',ỷ:'y',ỹ:'y',ỵ:'y',đ:'d'};
+function viSlug(s){
+  return String(s).split('').map(c=>_vi[c]||_vi[c.toLowerCase()]||c).join('').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+}
+
+/* ══════════════════════════════════════
    STATE
-════════════════════════════════════════ */
-const st = {
-  view: 'home',   // home | detail | reader
-  stories: null,
-  story: null,
-  chapter: null,
-  chapNum: 0,
-  loading: false,
-  error: null,
+══════════════════════════════════════ */
+const st={view:'home',stories:null,story:null,chapter:null,loading:false,error:null};
+const slugMap={};  // urlSlug → originalSlug
+
+/* ══════════════════════════════════════
+   HISTORY (last 5 stories)
+══════════════════════════════════════ */
+const hist={
+  MAX:5,
+  load(){try{return JSON.parse(localStorage.getItem('th_hist')||'[]')}catch{return[]}},
+  push(slug,tenTruyen,num){
+    let h=this.load().filter(x=>x.slug!==slug);
+    h.unshift({slug,tenTruyen,num,ts:Date.now()});
+    localStorage.setItem('th_hist',JSON.stringify(h.slice(0,this.MAX)));
+  },
+  updateNum(slug,num){
+    let h=this.load();
+    const i=h.findIndex(x=>x.slug===slug);
+    if(i>=0){h[i].num=num;h[i].ts=Date.now();localStorage.setItem('th_hist',JSON.stringify(h))}
+  },
 };
 
-/* ════════════════════════════════════════
+/* ══════════════════════════════════════
+   SCROLL SAVE / RESTORE
+══════════════════════════════════════ */
+let _scrollTimer=null;
+function scrollKey(slug,num){return `th_sc_${slug}_${num}`}
+function saveScroll(){
+  if(st.view!=='reader'||!st.chapter)return;
+  const y=Math.round(window.scrollY||document.documentElement.scrollTop);
+  localStorage.setItem(scrollKey(st.chapter.slug,st.chapter.num), y);
+  hist.updateNum(st.chapter.slug,st.chapter.num);
+}
+function restoreScroll(slug,num){
+  const y=parseInt(localStorage.getItem(scrollKey(slug,num))||'0');
+  if(y>0) setTimeout(()=>window.scrollTo({top:y,behavior:'instant'}),120);
+}
+function onScroll(){
+  clearTimeout(_scrollTimer);
+  _scrollTimer=setTimeout(saveScroll,400);
+  updateProgressBar();
+}
+
+/* ══════════════════════════════════════
    READING SETTINGS
-════════════════════════════════════════ */
-const cfg = {
-  theme: 'dark',
-  font:  'serif',
-  size:  17,
-  lh:    1.95,
-  width: 700,
-};
+══════════════════════════════════════ */
+const cfg={theme:'dark',font:'serif',size:17,lh:1.95,width:700};
+function loadCfg(){try{Object.assign(cfg,JSON.parse(localStorage.getItem('th_cfg')||'{}'))}catch{}}
+function saveCfg(){localStorage.setItem('th_cfg',JSON.stringify(cfg))}
+function applyCfg(){
+  const r=document.documentElement;
+  r.setAttribute('data-theme',cfg.theme);
+  r.setAttribute('data-font',cfg.font);
+  r.style.setProperty('--size-read',cfg.size+'px');
+  r.style.setProperty('--lh-read',cfg.lh);
+  r.style.setProperty('--width-read',cfg.width+'px');
+  document.getElementById('btn-theme').textContent=cfg.theme==='dark'?'🌙':cfg.theme==='light'?'☀️':'📜';
+  document.querySelectorAll('.theme-btn').forEach(b=>b.classList.toggle('sel',b.classList.contains(cfg.theme+'-btn')));
+  document.querySelectorAll('[data-font]').forEach(b=>b.classList.toggle('sel',b.dataset.font===cfg.font));
+  document.querySelectorAll('[data-lh]').forEach(b=>b.classList.toggle('sel',parseFloat(b.dataset.lh)===cfg.lh));
+  document.querySelectorAll('[data-w]').forEach(b=>b.classList.toggle('sel',parseInt(b.dataset.w)===cfg.width));
+  const sl=document.getElementById('size-slider');
+  if(sl){sl.value=cfg.size;document.getElementById('size-val').textContent=cfg.size+'px'}
+}
+function setTheme(t){cfg.theme=t;saveCfg();applyCfg()}
+function setFont(f){cfg.font=f;saveCfg();applyCfg()}
+function setLineH(v){cfg.lh=v;saveCfg();applyCfg()}
+function setWidth(w){cfg.width=w;saveCfg();applyCfg()}
+function cycleTheme(){const ts=['dark','light','sepia'];cfg.theme=ts[(ts.indexOf(cfg.theme)+1)%3];saveCfg();applyCfg()}
+function onSizeSlider(v){cfg.size=parseInt(v);saveCfg();applyCfg()}
+function changeFontSize(d){cfg.size=Math.max(13,Math.min(26,cfg.size+d));saveCfg();applyCfg()}
 
-function loadCfg() {
-  try {
-    const s = JSON.parse(localStorage.getItem('th_cfg') || '{}');
-    Object.assign(cfg, s);
-  } catch(e) {}
-}
-function saveCfg() {
-  localStorage.setItem('th_cfg', JSON.stringify(cfg));
-}
-function applyCfg() {
-  const root = document.documentElement;
-  root.setAttribute('data-theme', cfg.theme);
-  root.setAttribute('data-font',  cfg.font);
-  root.style.setProperty('--size-read', cfg.size + 'px');
-  root.style.setProperty('--lh-read',   cfg.lh);
-  root.style.setProperty('--width-read', cfg.width + 'px');
-  // Nav theme icon
-  document.getElementById('btn-theme').textContent =
-    cfg.theme === 'dark' ? '🌙' : cfg.theme === 'light' ? '☀️' : '📜';
-  // Update drawer UI
-  document.querySelectorAll('.theme-btn').forEach(b =>
-    b.classList.toggle('sel', b.classList.contains(cfg.theme+'-btn')));
-  document.querySelectorAll('[data-font]').forEach(b =>
-    b.classList.toggle('sel', b.dataset.font === cfg.font));
-  document.querySelectorAll('[data-lh]').forEach(b =>
-    b.classList.toggle('sel', parseFloat(b.dataset.lh) === cfg.lh));
-  document.querySelectorAll('[data-w]').forEach(b =>
-    b.classList.toggle('sel', parseInt(b.dataset.w) === cfg.width));
-  const slider = document.getElementById('size-slider');
-  if (slider) { slider.value = cfg.size; document.getElementById('size-val').textContent = cfg.size + 'px'; }
-}
-
-function setTheme(t)  { cfg.theme = t; saveCfg(); applyCfg() }
-function setFont(f)   { cfg.font  = f; saveCfg(); applyCfg() }
-function setLineH(v)  { cfg.lh    = v; saveCfg(); applyCfg() }
-function setWidth(w)  { cfg.width = w; saveCfg(); applyCfg() }
-function cycleTheme() {
-  const themes = ['dark','light','sepia'];
-  cfg.theme = themes[(themes.indexOf(cfg.theme)+1)%3];
-  saveCfg(); applyCfg();
-}
-function onSizeSlider(v) {
-  cfg.size = parseInt(v); saveCfg(); applyCfg();
-}
-function changeFontSize(d) {
-  cfg.size = Math.max(13, Math.min(26, cfg.size + d));
-  saveCfg(); applyCfg();
-}
-
-/* ════════════════════════════════════════
+/* ══════════════════════════════════════
    DRAWER
-════════════════════════════════════════ */
-function openDrawer()  {
-  applyCfg();
-  document.getElementById('drawer').classList.add('open');
-  document.getElementById('overlay').classList.add('open');
-}
-function closeDrawer() {
-  document.getElementById('drawer').classList.remove('open');
-  document.getElementById('overlay').classList.remove('open');
+══════════════════════════════════════ */
+function openDrawer(){applyCfg();document.getElementById('drawer').classList.add('open');document.getElementById('overlay').classList.add('open')}
+function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('overlay').classList.remove('open')}
+
+/* ══════════════════════════════════════
+   PROGRESS BAR
+══════════════════════════════════════ */
+function updateProgressBar(){
+  const bar=document.getElementById('prog-bar');
+  if(!bar)return;
+  const doc=document.documentElement;
+  const s=doc.scrollTop||document.body.scrollTop;
+  const h=doc.scrollHeight-doc.clientHeight;
+  bar.style.width=(h>0?(s/h*100):0)+'%';
 }
 
-/* ════════════════════════════════════════
-   READING PROGRESS
-════════════════════════════════════════ */
-const lastRead = {
-  load()  { try { return JSON.parse(localStorage.getItem('th_last')||'{}') } catch(e) { return {} } },
-  save(slug,num) { localStorage.setItem('th_last',JSON.stringify({slug,num})) },
-};
+/* ══════════════════════════════════════
+   HASH ROUTING
+══════════════════════════════════════ */
+let _settingHash=false;
+function setHash(h){_settingHash=true;location.hash=h;setTimeout(()=>{_settingHash=false},80)}
 
-function updateProgress() {
-  const bar = document.getElementById('prog-bar');
-  if (!bar) return;
-  const doc  = document.documentElement;
-  const scrolled = doc.scrollTop || document.body.scrollTop;
-  const total = doc.scrollHeight - doc.clientHeight;
-  bar.style.width = total > 0 ? (scrolled/total*100)+'%' : '0%';
-}
+function routeFromHash(){
+  if(_settingHash)return;
+  const raw=location.hash.replace(/^#\/?/,'');
+  if(!raw){_showHome();return}
+  const parts=raw.split('/');
+  const uSlug=parts[0];
+  const chapPart=parts[1];  // "chuong-8" or undefined
+  const origSlug=slugMap[uSlug]||uSlug;
 
-/* ════════════════════════════════════════
-   ROUTING
-════════════════════════════════════════ */
-function goHome() {
-  st.view = 'home'; st.story = null; st.chapter = null;
-  document.getElementById('btn-settings-nav').style.display = 'none';
-  render(); window.scrollTo(0,0);
-}
-
-async function openStory(entry) {
-  if (typeof entry === 'string') entry = JSON.parse(entry);
-  st.view = 'detail'; st.loading = true; st.error = null; st.story = entry;
-  document.getElementById('btn-settings-nav').style.display = 'none';
-  render(); window.scrollTo(0,0);
-  try {
-    const meta = await fetchJSON(`${RAW}/truyen/${entry.slug}/meta.json`);
-    st.story = { ...entry, ...meta };
-  } catch(e) { st.error = e.message }
-  st.loading = false; render();
-}
-
-async function openChapter(slug, num) {
-  st.view = 'reader'; st.loading = true; st.chapNum = num; st.chapter = null;
-  document.getElementById('btn-settings-nav').style.display = 'flex';
-  render(); window.scrollTo(0,0);
-  try {
-    const url = `${RAW}/truyen/${slug}/chuong-${String(num).padStart(4,'0')}.md`;
-    const md  = await fetchText(url);
-    st.chapter = { slug, num, md };
-    lastRead.save(slug, num);
-  } catch(e) { st.error = e.message }
-  st.loading = false; render();
-  window.addEventListener('scroll', updateProgress, {passive:true});
-}
-
-/* ════════════════════════════════════════
-   FETCH
-════════════════════════════════════════ */
-async function fetchJSON(url) {
-  const r = await fetch(url + '?_=' + Date.now());
-  if (!r.ok) throw new Error(`HTTP ${r.status}`);
-  return r.json();
-}
-async function fetchText(url) {
-  const r = await fetch(url + '?_=' + Date.now());
-  if (!r.ok) throw new Error(`HTTP ${r.status}`);
-  return r.text();
-}
-
-async function loadStories() {
-  if (st.stories !== null) return;
-  st.loading = true; render();
-  try {
-    const data = await fetchJSON(`${RAW}/truyen/index.json`);
-    st.stories = Array.isArray(data) ? data : [data];
-  } catch(e) { st.stories = [] }
-  st.loading = false; render();
-}
-
-/* ════════════════════════════════════════
-   MARKDOWN → HTML
-════════════════════════════════════════ */
-function mdToHtml(md) {
-  let html = '';
-  for (const line of md.split('\n')) {
-    const t = line.trim();
-    if (!t) continue;
-    if (t.startsWith('# '))  { html += `<h1>${esc(t.slice(2))}</h1>`; continue }
-    if (t.startsWith('## ')) { html += `<h2>${esc(t.slice(3))}</h2>`; continue }
-    html += `<p>${esc(t)}</p>`;
+  if(chapPart&&chapPart.startsWith('chuong-')){
+    const num=parseInt(chapPart.replace('chuong-',''))||1;
+    _loadChapter(origSlug,num);
+  } else {
+    _loadStory(origSlug);
   }
-  return html;
 }
 
-/* ════════════════════════════════════════
+window.addEventListener('hashchange',routeFromHash);
+
+/* ══════════════════════════════════════
+   NAVIGATION (public API)
+══════════════════════════════════════ */
+function goHome(){setHash('/');_showHome()}
+function _showHome(){
+  st.view='home';st.story=null;st.chapter=null;st.error=null;
+  document.getElementById('btn-settings-nav').style.display='none';
+  window.removeEventListener('scroll',onScroll);
+  render();window.scrollTo(0,0);
+}
+
+function goStory(slug){
+  const uSlug=viSlug(slug);
+  setHash('/'+uSlug);
+  _loadStory(slug);
+}
+async function _loadStory(slug){
+  st.view='detail';st.loading=true;st.error=null;
+  // find entry in stories cache
+  const entry=(st.stories||[]).find(x=>x.slug===slug)||{slug};
+  st.story=entry;
+  document.getElementById('btn-settings-nav').style.display='none';
+  window.removeEventListener('scroll',onScroll);
+  render();window.scrollTo(0,0);
+  try{
+    const meta=await fetchJSON(`${RAW}/truyen/${slug}/meta.json`);
+    st.story={...entry,...meta};
+  }catch(e){st.error=e.message}
+  st.loading=false;render();
+}
+
+function goChapter(slug,num){
+  const uSlug=viSlug(slug);
+  setHash('/'+uSlug+'/chuong-'+num);
+  _loadChapter(slug,num);
+}
+async function _loadChapter(slug,num){
+  saveScroll(); // save current position before leaving
+  st.view='reader';st.loading=true;st.chapter=null;st.error=null;
+  document.getElementById('btn-settings-nav').style.display='flex';
+  render();window.scrollTo(0,0);
+
+  // load story meta if needed
+  if(!st.story||st.story.slug!==slug){
+    const entry=(st.stories||[]).find(x=>x.slug===slug)||{slug};
+    st.story=entry;
+    fetchJSON(`${RAW}/truyen/${slug}/meta.json`).then(m=>{st.story={...entry,...m};render()}).catch(()=>{});
+  }
+
+  try{
+    const url=`${RAW}/truyen/${slug}/chuong-${String(num).padStart(4,'0')}.md`;
+    const md=await fetchText(url);
+    st.chapter={slug,num,md};
+    const tenTruyen=st.story?.ten_truyen||slug;
+    hist.push(slug,tenTruyen,num);
+  }catch(e){st.error=e.message}
+
+  st.loading=false;render();
+  window.addEventListener('scroll',onScroll,{passive:true});
+  restoreScroll(slug,num);
+}
+
+/* ══════════════════════════════════════
+   FETCH
+══════════════════════════════════════ */
+async function fetchJSON(url){const r=await fetch(url+'?_='+Date.now());if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}
+async function fetchText(url){const r=await fetch(url+'?_='+Date.now());if(!r.ok)throw new Error('HTTP '+r.status);return r.text()}
+
+async function loadStories(){
+  if(st.stories!==null)return;
+  st.loading=true;render();
+  try{
+    const data=await fetchJSON(`${RAW}/truyen/index.json`);
+    st.stories=Array.isArray(data)?data:[data];
+    st.stories.forEach(s=>{slugMap[viSlug(s.slug)]=s.slug});
+  }catch{st.stories=[]}
+  st.loading=false;render();
+}
+
+/* ══════════════════════════════════════
+   MARKDOWN → HTML
+══════════════════════════════════════ */
+function mdToHtml(md){
+  let h='';
+  for(const line of md.split('\n')){
+    const t=line.trim();
+    if(!t)continue;
+    if(t.startsWith('# ')){h+=`<h1>${esc(t.slice(2))}</h1>`;continue}
+    if(t.startsWith('## ')){h+=`<h2>${esc(t.slice(3))}</h2>`;continue}
+    h+=`<p>${esc(t)}</p>`;
+  }
+  return h;
+}
+
+/* ══════════════════════════════════════
    HELPERS
-════════════════════════════════════════ */
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function slugToChar(slug) {
-  return (slug||'?').replace(/-/g,' ').split(' ')
-    .map(w=>w[0]?.toUpperCase()||'').join('').slice(0,2)||'?';
-}
-function fmtDate(s) { return s ? s.slice(0,10) : '' }
-function spinner() { return `<div class="page"><div class="spinner"></div></div>` }
-function errBox(msg) { return `<div class="err-box">⚠️ ${esc(msg)}</div>` }
+══════════════════════════════════════ */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function slugToChar(slug){return (slug||'?').replace(/-/g,' ').split(' ').map(w=>w[0]?.toUpperCase()||'').join('').slice(0,2)||'?'}
+function fmtDate(s){return s?s.slice(0,10):''}
+function fmtAge(ts){const d=Math.floor((Date.now()-ts)/86400000);return d===0?'Hôm nay':d===1?'Hôm qua':d+'n trước'}
+function spinner(){return`<div class="page"><div class="spinner"></div></div>`}
+function errBox(msg){return`<div class="err-box">⚠️ ${esc(msg)}</div>`}
 
-/* ════════════════════════════════════════
+/* ══════════════════════════════════════
    RENDER
-════════════════════════════════════════ */
-function render() {
-  document.getElementById('app').innerHTML =
-    st.view === 'home'   ? renderHome()   :
-    st.view === 'detail' ? renderDetail() :
-    st.view === 'reader' ? renderReader() : renderHome();
+══════════════════════════════════════ */
+function render(){
+  document.getElementById('app').innerHTML=
+    st.view==='home'?renderHome():
+    st.view==='detail'?renderDetail():
+    st.view==='reader'?renderReader():renderHome();
+  applyCfg();
 }
 
 /* ── HOME ── */
-function renderHome() {
-  if (st.stories === null) { loadStories(); return spinner() }
-  if (st.loading) return spinner();
-  const stories = st.stories || [];
-  const last    = lastRead.load();
+function renderHome(){
+  if(st.stories===null){loadStories();return spinner()}
+  if(st.loading)return spinner();
+  const stories=st.stories||[];
+  const history=hist.load();
 
-  let continueHtml = '';
-  if (last.slug && last.num) {
-    const s = stories.find(x => x.slug === last.slug);
-    if (s) {
-      continueHtml = `
-      <div class="continue-section">
-        <div class="section-hd">Đọc tiếp</div>
-        <div class="continue-card" onclick="openChapter('${esc(last.slug)}',${last.num})">
-          <div class="story-cover" style="margin:0">${slugToChar(last.slug)}</div>
-          <div class="continue-info">
-            <div class="continue-title">${esc(s.ten_truyen||last.slug)}</div>
-            <div class="continue-sub">Chương ${last.num} · Tiếp tục đọc →</div>
-          </div>
-          <span class="continue-arrow">▶</span>
+  let histHtml='';
+  if(history.length){
+    const cards=history.map(h=>{
+      const s=stories.find(x=>x.slug===h.slug)||{slug:h.slug,chuong_xong:0};
+      const total=s.chuong_xong||0;
+      const pct=total>0?Math.round(h.num/total*100):0;
+      return `<div class="hist-card" onclick="goChapter('${esc(h.slug)}',${h.num})">
+        <div class="hist-cover">${slugToChar(h.slug)}</div>
+        <div class="hist-info">
+          <div class="hist-name">${esc(h.tenTruyen||h.slug)}</div>
+          <div class="hist-sub">Chương ${h.num}${total?' / '+total:''} · ${fmtAge(h.ts)}</div>
+          ${total?`<div class="hist-prog"><div class="hist-prog-bar" style="width:${pct}%"></div></div>`:''}
         </div>
+        <span class="hist-pct">${total?pct+'%':'→'}</span>
       </div>`;
-    }
+    }).join('');
+    histHtml=`<div class="hist-section">
+      <div class="section-hd">Đang đọc</div>
+      <div class="hist-list">${cards}</div>
+    </div>`;
   }
 
-  const cards = stories.length
-    ? stories.map(s => {
-        const isNew = s.cap_nhat && (Date.now() - new Date(s.cap_nhat).getTime()) < 86400000*3;
-        return `<div class="story-card" onclick='openStory(${JSON.stringify(JSON.stringify(s))})'>
-          ${isNew ? '<div class="story-new"></div>' : ''}
+  const cards=stories.length
+    ?stories.map(s=>{
+        const isNew=s.cap_nhat&&(Date.now()-new Date(s.cap_nhat).getTime())<86400000*3;
+        const inHist=history.some(h=>h.slug===s.slug);
+        return `<div class="story-card" onclick="goStory('${esc(s.slug)}')">
+          ${isNew?'<div class="story-new"></div>':''}
           <div class="story-cover">${slugToChar(s.slug)}</div>
           <div class="story-title">${esc(s.ten_truyen||s.slug)}</div>
-          ${s.the_loai ? `<span class="story-badge">${esc(s.the_loai)}</span>` : ''}
+          ${s.the_loai?`<span class="story-badge">${esc(s.the_loai)}</span>`:''}
           <div class="story-meta">${s.chuong_xong||0} chương · ${fmtDate(s.cap_nhat)}</div>
         </div>`;
       }).join('')
-    : `<div class="empty">
-        <h3>Chưa có truyện nào</h3>
-        <p>Chạy app AI viết truyện,<br>kết quả xuất hiện ở đây tự động.</p>
-       </div>`;
+    :`<div class="empty"><h3>Chưa có truyện nào</h3><p>Chạy app AI viết truyện,<br>kết quả xuất hiện ở đây tự động.</p></div>`;
 
   return `<div class="page">
-    <div class="welcome">
-      <h1>TruyenHot</h1>
-      <p>Truyện AI viết · Không quảng cáo · Miễn phí</p>
-    </div>
-    ${continueHtml}
+    <div class="welcome"><h1>TruyenHot</h1><p>Truyện AI viết · Không quảng cáo · Miễn phí</p></div>
+    ${histHtml}
     <div class="section-hd">Thư viện</div>
     <div class="story-grid">${cards}</div>
   </div>`;
 }
 
 /* ── DETAIL ── */
-function renderDetail() {
-  if (st.loading) return spinner();
-  if (st.error)   return `<div class="page">${errBox(st.error)}</div>`;
-  const s = st.story; if (!s) return renderHome();
-  const chuongs = s.chuongs || [];
+function renderDetail(){
+  if(st.loading)return spinner();
+  if(st.error)return`<div class="page">${errBox(st.error)}</div>`;
+  const s=st.story;if(!s)return renderHome();
+  const chuongs=s.chuongs||[];
+  const histEntry=hist.load().find(h=>h.slug===s.slug);
+  const lastNum=histEntry?.num||0;
 
-  const chapItems = chuongs.map(c => `
-    <div class="chap-item" onclick="openChapter('${esc(s.slug)}',${c.so_chuong})">
+  const chapItems=chuongs.map(c=>{
+    const isLast=c.so_chuong===lastNum;
+    return`<div class="chap-item${isLast?' last-read':''}" onclick="goChapter('${esc(s.slug)}',${c.so_chuong})">
       <span class="chap-num">C${c.so_chuong}</span>
-      <span class="chap-title">${c.tieu_de ? esc(c.tieu_de) : 'Chương '+c.so_chuong}</span>
+      <span class="chap-title">${c.tieu_de?esc(c.tieu_de):'Chương '+c.so_chuong}</span>
+      ${isLast?'<span class="chap-dot"></span>':''}
       <span class="chap-date">${fmtDate(c.cap_nhat)}</span>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 
-  return `<div class="page">
+  const startNum=lastNum>0?lastNum:(chuongs.length?chuongs[0].so_chuong:1);
+  const startLabel=lastNum>0?`▶ Đọc tiếp chương ${lastNum}`:`▶ Đọc từ chương ${startNum}`;
+
+  return`<div class="page">
     <button class="back-btn" onclick="goHome()">← Trang chủ</button>
     <div class="story-hdr">
       <div class="story-hdr-cover">${slugToChar(s.slug)}</div>
       <div class="story-hdr-info">
         <h1>${esc(s.ten_truyen||s.slug)}</h1>
-        <p>${s.the_loai ? esc(s.the_loai)+' · ' : ''}${chuongs.length} chương${s.tong_chuong_ke_hoach ? ' / '+s.tong_chuong_ke_hoach+' kế hoạch' : ''}</p>
+        <p>${s.the_loai?esc(s.the_loai)+' · ':''}${chuongs.length} chương${s.tong_chuong_ke_hoach?' / '+s.tong_chuong_ke_hoach+' kế hoạch':''}</p>
       </div>
     </div>
-    ${s.tom_tat ? `<div class="story-summary">${esc(s.tom_tat.slice(0,500))}</div>` : ''}
-    ${chuongs.length ? `<button class="read-first-btn" onclick="openChapter('${esc(s.slug)}',${chuongs[0].so_chuong})">▶ Đọc từ chương ${chuongs[0].so_chuong}</button>` : ''}
+    ${s.tom_tat?`<div class="story-summary">${esc(s.tom_tat.slice(0,500))}</div>`:''}
+    ${chuongs.length?`<button class="read-first-btn" onclick="goChapter('${esc(s.slug)}',${startNum})">${startLabel}</button>`:''}
     <div class="section-hd">Danh sách chương</div>
-    <div class="chap-list">${chapItems || '<div class="empty"><p>Chưa có chương.</p></div>'}</div>
+    <div class="chap-list">${chapItems||'<div class="empty"><p>Chưa có chương.</p></div>'}</div>
   </div>`;
 }
 
 /* ── READER ── */
-function renderReader() {
-  if (st.loading) return `${spinner()}<div class="read-progress"><div class="read-progress-bar" id="prog-bar" style="width:0"></div></div>`;
-  if (st.error)   return `<div class="page">${errBox(st.error)}</div>`;
-  const ch = st.chapter; if (!ch) return renderHome();
-  const s  = st.story;
-  const totalCh = s ? (s.chuong_xong || (s.chuongs||[]).length || 0) : 0;
-  const hasPrev = ch.num > 1;
-  const hasNext = ch.num < totalCh;
-  const storyName = s?.ten_truyen || ch.slug;
+function renderReader(){
+  if(st.loading)return`${spinner()}<div class="read-progress"><div class="read-progress-bar" id="prog-bar" style="width:0"></div></div>`;
+  if(st.error)return`<div class="page">${errBox(st.error)}</div>`;
+  const ch=st.chapter;if(!ch)return renderHome();
+  const s=st.story;
+  const chuongs=s?.chuongs||[];
+  const nums=chuongs.map(c=>c.so_chuong).sort((a,b)=>a-b);
+  const totalCh=s?(s.chuong_xong||(nums.length?nums[nums.length-1]:0)):0;
+  const idxCur=nums.indexOf(ch.num);
+  const hasPrev=idxCur>0||(nums.length===0&&ch.num>1);
+  const hasNext=idxCur<nums.length-1||(nums.length===0&&totalCh>ch.num);
+  const prevNum=idxCur>0?nums[idxCur-1]:ch.num-1;
+  const nextNum=idxCur<nums.length-1?nums[idxCur+1]:ch.num+1;
+  const storyName=s?.ten_truyen||ch.slug;
+  const uSlug=viSlug(ch.slug);
 
-  return `
+  return`
   <div class="read-progress"><div class="read-progress-bar" id="prog-bar" style="width:0"></div></div>
   <div class="page">
     <div class="reader-wrap">
       <div class="reader-top">
-        <span class="reader-story-link" onclick='openStory(${JSON.stringify(JSON.stringify(s||{slug:ch.slug}))})'>← ${esc(storyName)}</span>
+        <span class="reader-story-link" onclick="goStory('${esc(ch.slug)}')">← ${esc(storyName)}</span>
         <span class="reader-chap-info">Chương ${ch.num}/${totalCh||'?'}</span>
       </div>
       <div class="reader-body" id="reader-body">${mdToHtml(ch.md)}</div>
@@ -739,36 +588,52 @@ function renderReader() {
   </div>
   <button class="fab" onclick="openDrawer()" title="Cài đặt">⚙</button>
   <div class="reader-nav-bar">
-    <button class="rnb-btn" onclick="openChapter('${ch.slug}',${ch.num-1})" ${hasPrev?'':'disabled'}>← Trước</button>
-    <div class="rnb-center" onclick='openStory(${JSON.stringify(JSON.stringify(s||{slug:ch.slug}))})'>
-      <span class="rnb-chap">C.${ch.num}</span>
+    <button class="rnb-btn" onclick="goChapter('${esc(ch.slug)}',${prevNum})" ${hasPrev?'':'disabled'}>← Trước</button>
+    <div class="rnb-center" onclick="goStory('${esc(ch.slug)}')">
+      <span class="rnb-chap">C.${ch.num}/${totalCh||'?'}</span>
       <span class="rnb-prog">Mục lục</span>
     </div>
-    <button class="rnb-btn" onclick="openChapter('${ch.slug}',${ch.num+1})" ${hasNext?'':'disabled'}>Sau →</button>
+    <button class="rnb-btn" onclick="goChapter('${esc(ch.slug)}',${nextNum})" ${hasNext?'':'disabled'}>Sau →</button>
   </div>`;
 }
 
-/* ════════════════════════════════════════
+/* ══════════════════════════════════════
    SWIPE (mobile)
-════════════════════════════════════════ */
-let touchX0 = 0;
-document.addEventListener('touchstart', e => { touchX0 = e.touches[0].clientX }, {passive:true});
-document.addEventListener('touchend', e => {
-  if (st.view !== 'reader' || !st.chapter) return;
-  const dx = e.changedTouches[0].clientX - touchX0;
-  if (Math.abs(dx) < 60) return;
-  const ch = st.chapter;
-  const totalCh = st.story ? (st.story.chuong_xong || 0) : 0;
-  if (dx < -60 && ch.num < totalCh) openChapter(ch.slug, ch.num+1); // swipe left = next
-  if (dx > 60  && ch.num > 1)       openChapter(ch.slug, ch.num-1); // swipe right = prev
-}, {passive:true});
+══════════════════════════════════════ */
+let touchX0=0;
+document.addEventListener('touchstart',e=>{touchX0=e.touches[0].clientX},{passive:true});
+document.addEventListener('touchend',e=>{
+  if(st.view!=='reader'||!st.chapter)return;
+  const dx=e.changedTouches[0].clientX-touchX0;
+  if(Math.abs(dx)<70)return;
+  const s=st.story;
+  const nums=(s?.chuongs||[]).map(c=>c.so_chuong).sort((a,b)=>a-b);
+  const i=nums.indexOf(st.chapter.num);
+  if(dx<-70){const nxt=i<nums.length-1?nums[i+1]:st.chapter.num+1;goChapter(st.chapter.slug,nxt)}
+  if(dx>70 && st.chapter.num>1){const prv=i>0?nums[i-1]:st.chapter.num-1;goChapter(st.chapter.slug,prv)}
+},{passive:true});
 
-/* ════════════════════════════════════════
+/* ══════════════════════════════════════
+   KEYBOARD
+══════════════════════════════════════ */
+document.addEventListener('keydown',e=>{
+  if(st.view!=='reader'||!st.chapter)return;
+  if(e.key==='ArrowRight'){document.querySelector('.rnb-btn:last-child:not(:disabled)')?.click()}
+  if(e.key==='ArrowLeft'){document.querySelector('.rnb-btn:first-child:not(:disabled)')?.click()}
+  if(e.key==='Escape')closeDrawer();
+});
+
+/* ══════════════════════════════════════
    INIT
-════════════════════════════════════════ */
+══════════════════════════════════════ */
 loadCfg();
 applyCfg();
-render();
+
+// Load stories first (to build slugMap), then route
+(async()=>{
+  await loadStories();
+  routeFromHash();
+})();
 </script>
 </body>
 </html>
