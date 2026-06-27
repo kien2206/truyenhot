@@ -4,8 +4,8 @@
   "the_loai": "Võ hiệp, Huyền huyễn",
   "tom_tat": "Ba nghìn năm trước, Huyền Dạ Đế Quân, một trong chín đại Đế Quân của Thái Cổ Thiên Vực, đã rơi vào cạm bẫy của người huynh đệ và vị hôn thê, bị hủy thân xác và tan biến đế hồn trong trận chiến tranh đoạt Thiên Đạo Đế Ấn. Một mảnh tàn hồn cô độc của hắn lưu lạc đến hạ giới, chờ đợi ngày thức tỉnh.\n\nBa nghìn năm sau, tàn hồn của Huyền Dạ Đế Quân tái sinh trong thân ",
   "tong_chuong_ke_hoach": 20,
-  "chuong_xong": 4,
-  "cap_nhat": "2026-06-27T18:26:17",
+  "chuong_xong": 5,
+  "cap_nhat": "2026-06-27T18:27:42",
   "chuongs": [
     {
       "so_chuong": 1,
@@ -22,6 +22,10 @@
     {
       "so_chuong": 4,
       "cap_nhat": "2026-06-27T18:26:17"
+    },
+    {
+      "so_chuong": 5,
+      "cap_nhat": "2026-06-27T18:27:42"
     }
   ]
 }
