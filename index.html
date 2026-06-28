@@ -331,33 +331,42 @@ function updateProgressBar(){
 
 /* ══════════════════════════════════════
    HASH ROUTING
+   - goHome / goStory dùng pushState (thêm vào history → back button về đúng)
+   - goChapter dùng replaceState (KHÔNG thêm vào history → swipe cạnh màn
+     hình không tự nhảy về chương trước)
 ══════════════════════════════════════ */
-let _settingHash=false;
-function setHash(h){_settingHash=true;location.hash=h;setTimeout(()=>{_settingHash=false},80)}
+function _pushUrl(h){history.pushState({url:h},'','#'+h)}
+function _replaceUrl(h){history.replaceState({url:h},'','#'+h)}
 
 function routeFromHash(){
-  if(_settingHash)return;
   const raw=location.hash.replace(/^#\/?/,'');
   if(!raw){_showHome();return}
   const parts=raw.split('/');
   const uSlug=parts[0];
-  const chapPart=parts[1];  // "chuong-8" or undefined
+  const chapPart=parts[1];
   const origSlug=slugMap[uSlug]||uSlug;
-
   if(chapPart&&chapPart.startsWith('chuong-')){
     const num=parseInt(chapPart.replace('chuong-',''))||1;
+    // nếu đang ở đúng chương này rồi thì không load lại
+    if(st.view==='reader'&&st.chapter?.slug===origSlug&&st.chapter?.num===num)return;
     _loadChapter(origSlug,num);
   } else {
+    if(st.view==='detail'&&st.story?.slug===origSlug)return;
     _loadStory(origSlug);
   }
 }
 
-window.addEventListener('hashchange',routeFromHash);
+// popstate: bấm Back/Forward trên trình duyệt
+window.addEventListener('popstate',e=>{
+  routeFromHash();
+});
+// hashchange: dùng cho trường hợp ai đó paste URL trực tiếp
+window.addEventListener('hashchange',()=>routeFromHash());
 
 /* ══════════════════════════════════════
    NAVIGATION (public API)
 ══════════════════════════════════════ */
-function goHome(){setHash('/');_showHome()}
+function goHome(){_pushUrl('/');_showHome()}
 function _showHome(){
   st.view='home';st.story=null;st.chapter=null;st.error=null;
   document.getElementById('btn-settings-nav').style.display='none';
@@ -366,13 +375,11 @@ function _showHome(){
 }
 
 function goStory(slug){
-  const uSlug=viSlug(slug);
-  setHash('/'+uSlug);
+  _pushUrl('/'+viSlug(slug));
   _loadStory(slug);
 }
 async function _loadStory(slug){
   st.view='detail';st.loading=true;st.error=null;
-  // find entry in stories cache
   const entry=(st.stories||[]).find(x=>x.slug===slug)||{slug};
   st.story=entry;
   document.getElementById('btn-settings-nav').style.display='none';
@@ -386,29 +393,37 @@ async function _loadStory(slug){
 }
 
 function goChapter(slug,num){
-  const uSlug=viSlug(slug);
-  setHash('/'+uSlug+'/chuong-'+num);
+  // replaceState: không thêm vào history → swipe edge / back button
+  // sẽ về trang trước khi mở chương, không về chương trước
+  _replaceUrl('/'+viSlug(slug)+'/chuong-'+num);
   _loadChapter(slug,num);
 }
 async function _loadChapter(slug,num){
-  saveScroll(); // save current position before leaving
+  saveScroll();
   st.view='reader';st.loading=true;st.chapter=null;st.error=null;
   document.getElementById('btn-settings-nav').style.display='flex';
+  // xóa listener cũ trước khi render (tránh tích lũy)
+  window.removeEventListener('scroll',onScroll);
   render();window.scrollTo(0,0);
 
-  // load story meta if needed
+  // load story meta nếu chưa có, nhưng KHÔNG render lại nếu user đã
+  // chuyển sang chương khác trong lúc chờ
   if(!st.story||st.story.slug!==slug){
     const entry=(st.stories||[]).find(x=>x.slug===slug)||{slug};
     st.story=entry;
-    fetchJSON(`${RAW}/truyen/${slug}/meta.json`).then(m=>{st.story={...entry,...m};render()}).catch(()=>{});
+    const snapSlug=slug, snapNum=num;
+    fetchJSON(`${RAW}/truyen/${slug}/meta.json`).then(m=>{
+      if(st.chapter?.slug===snapSlug&&st.chapter?.num===snapNum){
+        st.story={...entry,...m};render();
+      }
+    }).catch(()=>{});
   }
 
   try{
     const url=`${RAW}/truyen/${slug}/chuong-${String(num).padStart(4,'0')}.md`;
     const md=await fetchText(url);
     st.chapter={slug,num,md};
-    const tenTruyen=st.story?.ten_truyen||slug;
-    hist.push(slug,tenTruyen,num);
+    hist.push(slug,st.story?.ten_truyen||slug,num);
   }catch(e){st.error=e.message}
 
   st.loading=false;render();
@@ -598,19 +613,27 @@ function renderReader(){
 }
 
 /* ══════════════════════════════════════
-   SWIPE (mobile)
+   SWIPE (mobile) — chỉ kích hoạt khi swipe ngang rõ ràng:
+   dx > 90px VÀ dx > dy*2 (ngang nhiều hơn dọc gấp 2 lần)
 ══════════════════════════════════════ */
-let touchX0=0;
-document.addEventListener('touchstart',e=>{touchX0=e.touches[0].clientX},{passive:true});
+let touchX0=0,touchY0=0;
+document.addEventListener('touchstart',e=>{
+  touchX0=e.touches[0].clientX;
+  touchY0=e.touches[0].clientY;
+},{passive:true});
 document.addEventListener('touchend',e=>{
   if(st.view!=='reader'||!st.chapter)return;
+  // bỏ qua nếu drawer đang mở
+  if(document.getElementById('drawer').classList.contains('open'))return;
   const dx=e.changedTouches[0].clientX-touchX0;
-  if(Math.abs(dx)<70)return;
+  const dy=e.changedTouches[0].clientY-touchY0;
+  // phải ngang > 90px và ngang > dọc*2 mới tính là swipe chương
+  if(Math.abs(dx)<90||Math.abs(dx)<Math.abs(dy)*2)return;
   const s=st.story;
   const nums=(s?.chuongs||[]).map(c=>c.so_chuong).sort((a,b)=>a-b);
   const i=nums.indexOf(st.chapter.num);
-  if(dx<-70){const nxt=i<nums.length-1?nums[i+1]:st.chapter.num+1;goChapter(st.chapter.slug,nxt)}
-  if(dx>70 && st.chapter.num>1){const prv=i>0?nums[i-1]:st.chapter.num-1;goChapter(st.chapter.slug,prv)}
+  if(dx<0){const nxt=i<nums.length-1?nums[i+1]:st.chapter.num+1;goChapter(st.chapter.slug,nxt)}
+  else if(st.chapter.num>1){const prv=i>0?nums[i-1]:st.chapter.num-1;goChapter(st.chapter.slug,prv)}
 },{passive:true});
 
 /* ══════════════════════════════════════
